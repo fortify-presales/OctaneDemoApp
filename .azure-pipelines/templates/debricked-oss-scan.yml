@@ -33,6 +33,18 @@ jobs:
       versionSpec: ${{ parameters.jdkVersion }}
       jdkArchitectureOption: ${{ parameters.jdkArch }}
       jdkSourceOption: PreInstalled
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      workingDirectory: '.'
+      tasks: 'build'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      testRunTitle: 'Unit Tests'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      sonarQubeRunAnalysis: false
+      spotBugsAnalysis: false
   - task: DebrickedInstaller@0
     inputs:
       version: 'latest'
@@ -41,10 +53,9 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host ">${env:DEBRICKED_TOKEN}<"
-        Write-Host "##[command]debricked scan . -e '*/**.lock' -e '**/node_modules/**'' -t ${env:DEBRICKED_TOKEN}"
+        Write-Host "##[command]debricked scan . -e ""*/**.lock"" -t ""${env:DEBRICKED_TOKEN}"""
         debricked callgraph -e "**/build/classes/test/**"
-        debricked scan . -e "*/**.lock" -e "**/node_modules/**" -t ""${env:DEBRICKED_TOKEN}""
+        debricked scan . -e "*/**.lock" -t ""${env:DEBRICKED_TOKEN}""
       workingDirectory: ${{ parameters.workingDirectory }}
     env:
       DEBRICKED_TOKEN: ${{ parameters.debrickedToken }}
