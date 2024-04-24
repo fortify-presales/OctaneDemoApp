@@ -14,7 +14,7 @@ parameters:
 - name: debrickedToken
 
 jobs:
-- job: DebrickedOSSScan
+- job: DebrickedSCAScan
   pool: ${{ parameters.pool }}
   steps:
   - task: Bash@3
@@ -49,7 +49,7 @@ jobs:
     inputs:
       version: 'latest'
   - task: PowerShell@2
-    displayName: 'Debricked OSS Scan'
+    displayName: 'Debricked SCA Scan'
     inputs:
       targetType: 'inline'
       script: |

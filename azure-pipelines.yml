@@ -127,8 +127,8 @@ stages:
   #
   # Software Composition Analysis - OSS Scan with Debricked
   #
-  - stage: Debricked_OSS
-    displayName: 'Debricked OSS'
+  - stage: Debricked_SCA
+    displayName: 'Debricked SCA'
     condition: eq(variables['USE_DEBRICKED'], 'true')
     dependsOn:
       - BuildAndUnitTest
@@ -195,12 +195,12 @@ stages:
     dependsOn:
       - FoD_SAST
       #- FoD_OSS
-      - Debricked_OSS
+      - Debricked_SCA
     jobs:
       # This is a simulated deployment and does nothing
       - template: '.azure-pipelines/templates/simulate-deployment.yml'
         parameters:
-          workingDirectory: 'InsecureWebApp'
+          workingDirectory: '.'
           pool:
             name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
@@ -230,7 +230,7 @@ stages:
   #
   - stage: FoD_SecurityGate
     displayName: 'FoD Security Gate'
-    #condition: eq(variables['USE_FOD_SAST'], 'true')
+    condition: always()
     dependsOn:
       - FoD_SAST
       #- FoD_OSS
