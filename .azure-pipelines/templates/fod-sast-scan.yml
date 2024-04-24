@@ -95,7 +95,7 @@ jobs:
         scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod sast-scan start --release=$(fodReleaseId) --notes=""${env:FOD_SCAN_NOTES}"" --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
         fcli fod sast-scan start --release=$(fodReleaseId) --notes="${env:FOD_SCAN_NOTES}" -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
-        Start-Sleep -Seconds 10
+        Start-Sleep -Seconds 5
         $ScanId=(fcli util var get ::curScan::)
         Write-Host "##[debug]Scan Id is: $ScanId"
         Write-Host "##vso[task.setvariable variable=fodScanId]$ScanId"

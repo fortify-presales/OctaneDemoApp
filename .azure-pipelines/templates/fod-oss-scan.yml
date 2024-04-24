@@ -99,7 +99,7 @@ jobs:
         Compress-Archive -Path .\packages.lock.json -DestinationPath ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
         fcli fod oss-scan start --release=$(fodReleaseId) -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
-        Start-Sleep -Seconds 10
+        Start-Sleep -Seconds 5
         $ScanId=(fcli util var get ::curScan::)
         Write-Host "##[debug]Scan Id is: $ScanId"
         Write-Host "##vso[task.setvariable variable=fodScanId]$ScanId"
