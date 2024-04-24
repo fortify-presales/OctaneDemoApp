@@ -116,7 +116,7 @@ stages:
     displayName: 'Build and Unit Test'
     jobs:
       # Build OctaneDemoApp and run its tests
-      - template: '.azure-pipelines/templates/gradle-dotnet-build-and-test.yml'
+      - template: '.azure-pipelines/templates/gradle-build-and-test.yml'
         parameters:
           #      workingDirectory: '.'
           #      projectFile: 'build.gradle'
