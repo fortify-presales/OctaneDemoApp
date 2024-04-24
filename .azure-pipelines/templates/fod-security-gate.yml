@@ -22,9 +22,9 @@ parameters:
 - name: fodReportTemplate
   default: 'HybridIssueDetail'
 - name: reportDir
-  default: 'reports'
+  default: '$(Build.SourcesDirectory)/reports'
 - name: reportFile
-  default: 'reports/main.html'
+  default: '$(Build.SourcesDirectory)/reports/main.html'
 
 jobs:
 - job: FoDSecurityGate
