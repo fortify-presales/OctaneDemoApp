@@ -186,23 +186,6 @@ stages:
           pool:
             name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
-  #
-  # Software Composition Analysis - OSS Scan with Debricked
-  #
-  - stage: Debricked_OSS
-    displayName: 'Debricked OSS'
-    condition: eq(variables['USE_DEBRICKED'], 'true')
-    dependsOn:
-      - BuildAndUnitTest
-    jobs:
-      # Run Debricked OSS Scan on Project
-      - template: '.azure-pipelines/templates/debricked-oss-scan.yml'
-        parameters:
-          workingDirectory: '.'
-          debrickedToken: $(DEBRICKED_TOKEN)
-          pool:
-            name: 'FortifyPreSales' # use named self-hosted pool
-            #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
   # Deploy the application - use an appropriate set of tasks for your application/environment here
