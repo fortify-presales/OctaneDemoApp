@@ -53,9 +53,8 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "##[command]debricked scan . -e ""*/**.lock"" -t ""${env:DEBRICKED_TOKEN}"""
-        debricked callgraph -e "**/build/classes/test/**"
-        debricked scan . -e "*/**.lock" -t ""${env:DEBRICKED_TOKEN}""
+        Write-Host "##[command]debricked scan --callgraph --fingerprint --access-token=""${env:DEBRICKED_TOKEN}"" -e "*/**.lock" -e ""**/build/classes/test/**"""
+        debricked scan --callgraph --fingerprint --access-token="${env:DEBRICKED_TOKEN}" -e "*/**.lock" -e "**/build/classes/test/**" .
       workingDirectory: ${{ parameters.workingDirectory }}
     env:
       DEBRICKED_TOKEN: ${{ parameters.debrickedToken }}
