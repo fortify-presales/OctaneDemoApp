@@ -1,4 +1,4 @@
-# File: templates/build-and-test.yml
+# File: templates/dotnet-dotnet-build-and-test.yml
 
 # defaults for any parameters that aren't specified
 parameters: 

@@ -8,15 +8,7 @@ parameters:
 - name: workingDirectory
   default: ''
 - name: projectFile
-  default: '*.csproj'
-- name: dotnetVersion
-  default: '6.x'
-- name: buildConfiguration
-  default: 'Debug'
-- name: vsVersion
-  default: '2022'
-- name: vsEdition
-  default: 'Community'
+  default: 'build.gradle'
 - name: jdkVersion
   default: '17'
 - name: jdkArch
@@ -34,9 +26,17 @@ jobs:
 - job: FoDStaticScan
   pool: ${{ parameters.pool }}
   steps:
-  - task: UseDotNet@2
+  - task: Bash@3
+    displayName: 'Linux: Set environment variables manually'
+    condition: eq( variables['Agent.OS'], 'Linux' )
     inputs:
-      version: ${{ parameters.dotnetVersion }}
+      targetType: 'inline'
+      script: |
+        cd ~
+        echo "##vso[task.setvariable variable=HOME]$(pwd)"
+        echo "##vso[task.setvariable variable=USER]$(whoami)"
+        echo "##vso[task.setvariable variable=JAVA_HOME_17_X64]/usr/lib/jvm/java-17-openjdk-amd64"
+        echo "##vso[task.setvariable variable=JAVA_HOME]/usr/lib/jvm/java-17-openjdk-amd64"
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: ${{ parameters.jdkVersion }}
@@ -86,18 +86,13 @@ jobs:
       FOD_APP_NAME: ${{ parameters.fodAppName }}
       FOD_RELEASE_NAME: ${{ parameters.fodReleaseName }}
       FOD_PARENT_RELEASE_NAME: ${{ parameters.fodParentReleaseName }}
-  - task: BatchScript@1
-    displayName: 'Set Visual Studio environment'
-    inputs:
-      filename: ${{ format('C:\Program Files\Microsoft Visual Studio\{0}\{1}\Common7\Tools\VsDevCmd.bat', parameters.vsVersion, parameters.vsEdition) }}
-      modifyEnvironment: true
   - task: PowerShell@2
     displayName: 'FoD SAST Scan'
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "##[command]scancentral package -bt msbuild -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}"
-        scancentral package -bt msbuild -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}
+        Write-Host "##[command]scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}"
+        scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod sast-scan start --release $(fodReleaseId) --notes ""${env:FOD_SCAN_NOTES}"" -f ${env:PACKAGE_FILE} --store curScan --session azure-pipelines"
         fcli fod sast-scan start --release $(fodReleaseId) --notes "${env:FOD_SCAN_NOTES}" -f ${env:PACKAGE_FILE} --store curScan --session azure-pipelines
         $ScanId=(fcli util var get ::curScan::)

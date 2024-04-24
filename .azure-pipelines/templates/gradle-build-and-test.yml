@@ -1,4 +1,4 @@
-# File: templates/gradle-build-and-test.yml
+# File: templates/gradle-dotnet-build-and-test.yml
 
 # defaults for any parameters that aren't specified
 parameters: 
@@ -15,7 +15,8 @@ jobs:
   pool: ${{ parameters.pool }}
   steps:
   - task: Bash@3
-    displayName: 'Linux Workaround: Set environment variables manually'
+    displayName: 'Linux: Set environment variables manually'
+    condition: eq( variables['Agent.OS'], 'Linux' )
     inputs:
       targetType: 'inline'
       script: |
