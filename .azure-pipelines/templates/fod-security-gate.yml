@@ -72,13 +72,13 @@ jobs:
           Write-Host "##[debug]Using FORTIFY_RELEASE_NAME ${Rel}"
           Write-Host "##vso[task.setvariable variable=FORTIFY_RELEASE_NAME]${Rel}"
         }
-        Write-Host "##[command]fcli fod session login --url ""${env:FOD_API_URL}"" --client-id ""${env:FOD_CLIENT_ID}"" --client-secret ""${env:FOD_CLIENT_SECRET}"" --session azure-pipelines"
-        fcli fod session login --url ""${env:FOD_API_URL}"" --client-id ""${env:FOD_CLIENT_ID}"" --client-secret ""${env:FOD_CLIENT_SECRET}"" --session azure-pipelines
-
-        Write-Host "##[command]`$SecurityRating=(fcli fod release get ""${App}:${Rel}"" -o expr=""{rating}"" --session azure-pipelines"
-        $SecurityRating=(fcli fod release get "${App}:${Rel}" -o expr="{rating}" --session azure-pipelines)
-        Write-Host "##[command]`$IsPassed=(fcli fod release get ""${App}:${Rel}"" -o expr=""{isPassed}"" --session azure-pipelines"
-        $IsPassed=(fcli fod release get "${App}:${Rel}" -o expr="{isPassed}" --session azure-pipelines)
+        Write-Host "##[command]fcli fod session login --url=""${env:FOD_API_URL}"" --client-id=""${env:FOD_CLIENT_ID}"" --client-secret=""${env:FOD_CLIENT_SECRET}"" --session=azure-pipelines"
+        fcli fod session login --url=""${env:FOD_API_URL}"" --client-id=""${env:FOD_CLIENT_ID}"" --client-secret=""${env:FOD_CLIENT_SECRET}"" --session=azure-pipelines
+        
+        Write-Host "##[command]`$SecurityRating=(fcli fod release get ""${App}:${Rel}"" -o expr=""{rating}"" --session=azure-pipelines"
+        $SecurityRating=(fcli fod release get "${App}:${Rel}" -o expr="{rating}" --session=azure-pipelines)
+        Write-Host "##[command]`$IsPassed=(fcli fod release get ""${App}:${Rel}"" -o expr=""{isPassed}"" --session=azure-pipelines"
+        $IsPassed=(fcli fod release get "${App}:${Rel}" -o expr="{isPassed}" --session=azure-pipelines)
 
         Write-Host "##[debug]Release ""${App}:${Rel}"" Security Rating: ${SecurityRating}/5"
 
@@ -90,17 +90,17 @@ jobs:
         }
 
         Write-Host "##[command]Creating FoD Report for Release"
-        fcli fod report create "${env:FOD_REPORT_NAME}" --format html --release "${App}:${Rel}" --template "${env:FOD_REPORT_TEMPLATE}" --store curReport --session azure-pipelines
-        fcli fod report wait-for ::curReport:: --on-unknown-state=wait --session azure-pipelines
+        fcli fod report create "${env:FOD_REPORT_NAME}" --format html --release "${App}:${Rel}" --template "${env:FOD_REPORT_TEMPLATE}" --store curReport --session=azure-pipelines
+        fcli fod report wait-for ::curReport:: --on-unknown-state=wait --session=azure-pipelines
         New-Item -ItemType Directory -Force -Path ${env:FOD_REPORT_DIR} | Out-Null
-        fcli fod report download ::curReport:: -f ${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip --session azure-pipelines
+        fcli fod report download ::curReport:: -f ${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip --session=azure-pipelines
         Expand-Archive -Path ${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip -DestinationPath ${env:FOD_REPORT_DIR}
         Get-ChildItem -Path ${env:FOD_REPORT_DIR} -Filter '*.html' | Rename-Item -NewName { $_.Name -replace '_\d+' }
         Remove-Item -Force ${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip | Out-Null
-        fcli fod report delete ::curReport:: --session azure-pipelines
+        fcli fod report delete ::curReport:: --session=azure-pipelines
 
-        Write-Host "##[command]fcli fod session logout --session azure-pipelines"
-        fcli fod session logout --session azure-pipelines
+        Write-Host "##[command]fcli fod session logout --session=azure-pipelines"
+        fcli fod session logout --session=azure-pipelines
       showWarnings: true
     env:
       FOD_API_URL: ${{ parameters.fodApiUrl }}
