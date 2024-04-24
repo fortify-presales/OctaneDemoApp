@@ -13,7 +13,17 @@ parameters:
 jobs:
 - job: Build
   pool: ${{ parameters.pool }}
-  steps: 
+  steps:
+  - task: Bash@3
+    displayName: 'Linux Workaround: Set environment variables manually'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd ~
+        echo "##vso[task.setvariable variable=HOME]$(pwd)"
+        echo "##vso[task.setvariable variable=USER]$(whoami)"
+        echo "##vso[task.setvariable variable=JAVA_HOME_17_X64]/usr/lib/jvm/java-17-openjdk-amd64"
+        echo "##vso[task.setvariable variable=JAVA_HOME]/usr/lib/jvm/java-17-openjdk-amd64"
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: ${{ parameters.jdkVersion }}
