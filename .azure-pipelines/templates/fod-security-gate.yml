@@ -94,7 +94,7 @@ jobs:
         Start-Sleep -Seconds 10
         fcli fod report wait-for ::curReport:: --on-unknown-state=wait --session=azure-pipelines
         New-Item -ItemType Directory -Force -Path ${env:FOD_REPORT_DIR} | Out-Null
-        fcli fod report download ::curReport:: -f=${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip --session=azure-pipelines
+        fcli fod report download ::curReport:: --file=${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip --session=azure-pipelines
         Expand-Archive -Path ${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip -DestinationPath ${env:FOD_REPORT_DIR}
         Get-ChildItem -Path ${env:FOD_REPORT_DIR} -Filter '*.html' | Rename-Item -NewName { $_.Name -replace '_\d+' }
         Remove-Item -Force ${env:FOD_REPORT_DIR}/${env:FOD_REPORT_NAME}.zip | Out-Null
