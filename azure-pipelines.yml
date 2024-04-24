@@ -99,7 +99,7 @@ stages:
       - job:
         condition: always()
         pool:
-          name: 'Fortify' # use named self-hosted pool
+          name: 'FortifyPreSales' # use named self-hosted pool
           #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
         steps:
           - task: octane-start-task@2
@@ -121,7 +121,7 @@ stages:
           #      workingDirectory: '.'
           #      projectFile: 'build.gradle'
           pool:
-            name: 'Fortify' # use named self-hosted pool
+            name: 'FortifyPreSales' # use named self-hosted pool
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -139,7 +139,7 @@ stages:
           workingDirectory: '.'
           debrickedToken: $(DEBRICKED_TOKEN)
           pool:
-            name: 'Fortify' # use named self-hosted pool 
+            name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -162,7 +162,7 @@ stages:
           fodAppName: "$(FORTIFY_APP_NAME)"
           fodReleaseName: "$(FORTIFY_RELEASE_NAME)"
           pool:
-            name: 'Fortify' # use named self-hosted pool 
+            name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -184,7 +184,7 @@ stages:
           fodAppName: "$(FORTIFY_APP_NAME)"
           fodReleaseName: "$(FORTIFY_RELEASE_NAME)"
           pool:
-            name: 'Fortify' # use named self-hosted pool 
+            name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
   #
   # Software Composition Analysis - OSS Scan with Debricked
@@ -201,7 +201,7 @@ stages:
           workingDirectory: '.'
           debrickedToken: $(DEBRICKED_TOKEN)
           pool:
-            name: 'Fortify' # use named self-hosted pool
+            name: 'FortifyPreSales' # use named self-hosted pool
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -219,7 +219,7 @@ stages:
         parameters:
           workingDirectory: 'InsecureWebApp'
           pool:
-            name: 'Fortify' # use named self-hosted pool 
+            name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -239,7 +239,7 @@ stages:
           fodAppName: "$(FORTIFY_APP_NAME)"
           fodReleaseName: "$(FORTIFY_RELEASE_NAME)"
           pool:
-            name: 'Fortify' # use named self-hosted pool 
+            name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -263,7 +263,7 @@ stages:
           fodAppName: "$(FORTIFY_APP_NAME)"
           fodReleaseName: "$(FORTIFY_RELEASE_NAME)"
           pool:
-            name: 'Fortify' # use named self-hosted pool 
+            name: 'FortifyPreSales' # use named self-hosted pool 
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
@@ -291,7 +291,7 @@ stages:
           octaneClientId: $(OCTANE_CLIENT_ID)
           octaneClientSecret: $(OCTANE_CLIENT_SECRET)
           pool:
-            name: 'Fortify' # use named self-hosted pool
+            name: 'FortifyPreSales' # use named self-hosted pool
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   - stage: ALMOctanePost
@@ -306,7 +306,7 @@ stages:
       - job:
         condition: always()
         pool:
-          name: 'Fortify' # use named self-hosted pool
+          name: 'FortifyPreSales' # use named self-hosted pool
           #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
         steps:
           - task: octane-end-task@2
