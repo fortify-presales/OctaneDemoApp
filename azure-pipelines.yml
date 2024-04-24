@@ -284,6 +284,7 @@ stages:
       - ALMOctanePre
       - FoD_SAST
       - FoD_DAST
+      - FoD_SecurityGate
       - FoD_Issues_To_Octane
     jobs:
       - job:
