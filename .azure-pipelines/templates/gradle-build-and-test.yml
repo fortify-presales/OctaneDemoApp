@@ -1,0 +1,33 @@
+# File: templates/gradle-build-and-test.yml
+
+# defaults for any parameters that aren't specified
+parameters: 
+- name: 'pool'
+  type: object
+  default: {}
+- name: jdkVersion
+  default: '17'
+- name: jdkArch
+  default: 'x64'
+
+jobs:
+- job: Build
+  pool: ${{ parameters.pool }}
+  steps: 
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: ${{ parameters.jdkVersion }}
+      jdkArchitectureOption: ${{ parameters.jdkArch }}
+      jdkSourceOption: PreInstalled
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      workingDirectory: '.'
+      tasks: 'build'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      testRunTitle: 'Unit Tests'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      sonarQubeRunAnalysis: false
+      spotBugsAnalysis: false
