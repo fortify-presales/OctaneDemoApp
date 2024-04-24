@@ -33,23 +33,17 @@ jobs:
       versionSpec: ${{ parameters.jdkVersion }}
       jdkArchitectureOption: ${{ parameters.jdkArch }}
       jdkSourceOption: PreInstalled
-  - task: FcliInstaller@0
+  - task: DebrickedInstaller@0
     inputs:
       version: 'latest'
-  - task: PowerShell@2
-    displayName: 'Install Debricked CLI'
-    inputs:
-      targetType: 'inline'
-      script: |
-        fcli tool debricked-cli install -y -d $(Build.SourcesDirectory)/debricked
-        Write-Host "##vso[task.prependpath]$(Build.SourcesDirectory)/debricked/bin"
   - task: PowerShell@2
     displayName: 'Debricked OSS Scan'
     inputs:
       targetType: 'inline'
       script: |
+        Write-Host ">${env:DEBRICKED_TOKEN}<"
         Write-Host "##[command]debricked scan . -e '*/**.lock' -e '**/node_modules/**'' -t ${env:DEBRICKED_TOKEN}"
-        debricked callgraph -e "**/buid/classes/test/**"
+        debricked callgraph -e "**/build/classes/test/**"
         debricked scan . -e "*/**.lock" -e "**/node_modules/**" -t ""${env:DEBRICKED_TOKEN}""
       workingDirectory: ${{ parameters.workingDirectory }}
     env:
