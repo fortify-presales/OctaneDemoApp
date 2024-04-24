@@ -97,7 +97,7 @@ jobs:
         debricked resolve
         Write-Host "##[command]Compress-Archive -Path .\packages.lock.json -DestinationPath ${env:PACKAGE_FILE}"
         Compress-Archive -Path .\packages.lock.json -DestinationPath ${env:PACKAGE_FILE}
-        Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
+        Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
         fcli fod oss-scan start --release=$(fodReleaseId) -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
         Start-Sleep -Seconds 10
         $ScanId=(fcli util var get ::curScan::)
