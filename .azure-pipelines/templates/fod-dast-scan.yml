@@ -77,12 +77,12 @@ jobs:
         Write-Host "##[debug]Setting fodReleaseId to $RelId"
         Write-Host "##vso[task.setvariable variable=fodReleaseId]$RelId"
 
-        Write-Host "##[command]`$AssessmentTypeId=(fcli fod release lsat ""${App}:${Rel}"" --query='name=="DAST Automated"' -o expr=""{assessmentTypeId}"" --session=azure-pipelines"
-        $AssessmentTypeId=(fcli fod release last "${App}:${Rel}" --query='name=="DAST Automated"' -o expr="{assessmentTypeId}" --session=azure-pipelines)
+        Write-Host "##[command]`$AssessmentTypeId=(fcli fod release lsat --release=""${App}:${Rel}"" --query='name=="DAST Automated"' -o expr=""{assessmentTypeId}"" --session=azure-pipelines"
+        $AssessmentTypeId=(fcli fod release lsat --release="${App}:${Rel}" --query='name=="DAST Automated"' -o expr="{assessmentTypeId}" --session=azure-pipelines)
         Write-Host "##[debug]Setting fodAssessmentTypeId to $AssessmentTypeId"
         Write-Host "##vso[task.setvariable variable=fodAssessmentTypeId]$AssessmentTypeId"
-        Write-Host "##[command]`$IsPassed=(fcli fod release lsat ""${App}:${Rel}"" --query='name=="DAST Automated"' -o expr=""{entitlementId}"" --session=azure-pipelines"
-        $EntitlementId=(fcli fod release lsat "${App}:${Rel}" --query='name=="DAST Automated"' -o expr="{entitlementId}" --session=azure-pipelines)
+        Write-Host "##[command]`$IsPassed=(fcli fod release lsat --release=""${App}:${Rel}"" --query='name=="DAST Automated"' -o expr=""{entitlementId}"" --session=azure-pipelines"
+        $EntitlementId=(fcli fod release lsat --release="${App}:${Rel}" --query='name=="DAST Automated"' -o expr="{entitlementId}" --session=azure-pipelines)
         Write-Host "##[debug]Setting fodEntitlementId to $EntitlementId"
         Write-Host "##vso[task.setvariable variable=fodEntitlementId]$EntitlementId"
       showWarnings: true

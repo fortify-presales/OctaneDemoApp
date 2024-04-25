@@ -56,3 +56,5 @@ package.zip
 
 # Misc
 bin
+.debricked.multiprojects.txt
+.gradle-init-script.debricked.groovy

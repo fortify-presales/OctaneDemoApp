@@ -45,7 +45,7 @@ jobs:
       version: 'latest'
   - task: DebrickedInstaller@0
     inputs:
-      version: 'v1.5.1'
+      version: 'latest'
   - task: PowerShell@2
     displayName: 'FoD Check Release'
     inputs:
@@ -95,8 +95,8 @@ jobs:
         }
         Write-Host "##[command]debricked resolve $(Build.SourcesDirectory)"
         debricked resolve --regenerate 2 $(Build.SourcesDirectory)
-        Write-Host "##[command]Compress-Archive -Path $(Build.SourcesDirectory)/packages.lock.json -DestinationPath ${env:PACKAGE_FILE}"
-        Compress-Archive -Path $(Build.SourcesDirectory)/packages.lock.json -DestinationPath ${env:PACKAGE_FILE}
+        Write-Host "##[command]Compress-Archive -Path $(Build.SourcesDirectory)/gradle.debricked.lock -DestinationPath ${env:PACKAGE_FILE}"
+        Compress-Archive -Path $(Build.SourcesDirectory)/gradle.debricked.lock -DestinationPath ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
         fcli fod oss-scan start --release=$(fodReleaseId) -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
         Start-Sleep -Seconds 5
