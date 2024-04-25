@@ -19,6 +19,8 @@ parameters:
 - name: fodReleaseName
 - name: fodParentReleaseName
   default: 'main'
+- name: fodServiceConnection
+  default: 'FortifyOnDemandServiceConnection-OctaneDemoApp'  
 
 jobs:
 - job: FoDDynamicScan
@@ -74,6 +76,15 @@ jobs:
         $RelId=(fcli fod release create "${App}:${Rel}" --description="Created automatically from Azure DevOps" --copy-from="${App}:${env:FOD_PARENT_RELEASE_NAME}" --status=Development --skip-if-exists -o expr="{releaseId}" --session=azure-pipelines)
         Write-Host "##[debug]Setting fodReleaseId to $RelId"
         Write-Host "##vso[task.setvariable variable=fodReleaseId]$RelId"
+
+        Write-Host "##[command]`$AssessmentTypeId=(fcli fod release last ""${App}:${Rel}"" --query='name=="DAST Automated"' -o expr=""{assessmentTypeId}"" --session=azure-pipelines"
+        $AssessmentTypeId=(fcli fod release last "${App}:${Rel}" --query='name=="DAST Automated"' -o expr="{assessmentTypeId}" --session=azure-pipelines)
+        Write-Host "##[debug]Setting fodAssessmentTypeId to $AssessmentTypeId"
+        Write-Host "##vso[task.setvariable variable=fodAssessmentTypeId]$AssessmentTypeId"
+        Write-Host "##[command]`$IsPassed=(fcli fod release last ""${App}:${Rel}"" --query='name=="DAST Automated"' -o expr=""{entitlementId}"" --session=azure-pipelines"
+        $EntitlementId=(fcli fod release last "${App}:${Rel}" --query='name=="DAST Automated"' -o expr="{entitlementId}" --session=azure-pipelines)
+        Write-Host "##[debug]Setting fodEntitlementId to $EntitlementId"
+        Write-Host "##vso[task.setvariable variable=fodEntitlementId]$EntitlementId"
       showWarnings: true
     env:
       FOD_API_URL: ${{ parameters.fodApiUrl }}
@@ -82,22 +93,38 @@ jobs:
       FOD_APP_NAME: ${{ parameters.fodAppName }}
       FOD_RELEASE_NAME: ${{ parameters.fodReleaseName }}
       FOD_PARENT_RELEASE_NAME: ${{ parameters.fodParentReleaseName }}
-  - task: PowerShell@2
+# Uncomment to use Fortify Azure DevOps extension for DAST scan    
+  - task: FortifyDASTAutomated@2
     displayName: 'FoD DAST Scan'
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')  
     inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "##[command]fcli fod dast-scan start --release=$(fodReleaseId) --store=curScan --session=azure-pipelines"
-        fcli fod dast-scan start --release=$(fodReleaseId) --store=curScan --session=azure-pipelines
-        Start-Sleep -Seconds 5
-        $ScanId=(fcli util var get ::curScan::)
-        Write-Host "##[debug]Scan Id is: $ScanId"
-        Write-Host "##vso[task.setvariable variable=fodScanId]$ScanId"
-        Write-Host "##[command]fcli fod dast-scan wait-for ::curScan:: --session=azure-pipelines"
-        fcli fod dast-scan wait-for ::curScan:: --session=azure-pipelines
-      workingDirectory: ${{ parameters.workingDirectory }}
-    env:
-      FOD_RELEASE_ID: $(fodReleaseId)
+      FodConnection: $(fodServiceConnection)
+      ReleaseOptions: '0'
+      ReleaseId: $(fodReleaseId)
+      AssessmentTypeId: $(fodAssessmentTypeId)
+      EntitlementId: $(fodEntitlementId)
+      EntitlementFrequencyType: $(fodReleaseId)
+      OverrideScanSettings: '2'
+      PolicyFailAction: '0'
+# Uncomment to use fcli for SAST scan    
+#  - task: PowerShell@2
+#    displayName: 'FoD DAST Scan'
+#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+#    timeoutInMinutes: 120
+#    inputs:
+#      targetType: 'inline'
+#      script: |
+#        Write-Host "##[command]fcli fod dast-scan start --release=$(fodReleaseId) --store=curScan --session=azure-pipelines"
+#        fcli fod dast-scan start --release=$(fodReleaseId) --store=curScan --session=azure-pipelines
+#        Start-Sleep -Seconds 5
+#        $ScanId=(fcli util var get ::curScan::)
+#        Write-Host "##[debug]Scan Id is: $ScanId"
+#        Write-Host "##vso[task.setvariable variable=fodScanId]$ScanId"
+#        Write-Host "##[command]fcli fod dast-scan wait-for ::curScan:: --session=azure-pipelines"
+#        fcli fod dast-scan wait-for ::curScan:: --session=azure-pipelines
+#      workingDirectory: ${{ parameters.workingDirectory }}
+#    env:
+#      FOD_RELEASE_ID: $(fodReleaseId)
   - task: PowerShell@2
     displayName: 'FoD Logout'
     inputs:

@@ -21,6 +21,8 @@ parameters:
 - name: fodReleaseName
 - name: fodParentReleaseName
   default: 'main'
+- name: fodServiceConnection
+  default: 'FortifyOnDemandServiceConnection-OctaneDemoApp'  
 
 jobs:
 - job: FoDStaticScan
@@ -86,27 +88,45 @@ jobs:
       FOD_APP_NAME: ${{ parameters.fodAppName }}
       FOD_RELEASE_NAME: ${{ parameters.fodReleaseName }}
       FOD_PARENT_RELEASE_NAME: ${{ parameters.fodParentReleaseName }}
-  - task: PowerShell@2
-    displayName: 'FoD SAST Scan'
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "##[command]scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE} -oss"
-        scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE} -oss
-        Write-Host "##[command]fcli fod sast-scan start --release=$(fodReleaseId) --notes=""${env:FOD_SCAN_NOTES}"" --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
-        fcli fod sast-scan start --release=$(fodReleaseId) --notes="${env:FOD_SCAN_NOTES}" -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
-        Start-Sleep -Seconds 5
-        $ScanId=(fcli util var get ::curScan::)
-        Write-Host "##[debug]Scan Id is: $ScanId"
-        Write-Host "##vso[task.setvariable variable=fodScanId]$ScanId"
-        Write-Host "##[command]fcli fod sast-scan wait-for ::curScan:: --session=azure-pipelines"
-        fcli fod sast-scan wait-for ::curScan:: --session=azure-pipelines
-      workingDirectory: ${{ parameters.workingDirectory }}
-    env:
-      PROJ_FILE: ${{ parameters.projectFile }}
-      FOD_RELEASE_ID: $(fodReleaseId)
-      PACKAGE_FILE: "package.zip"
-      FOD_SCAN_NOTES: "Triggered by Azure DevOps Pipelines"
+# Uncomment to use Fortify Azure DevOps extension for SAST scan    
+ - task: FortifyOnDemandStatic@9
+   displayName: 'FoD SAST Scan'
+   inputs:
+      FortifyProjects: '.'
+      FodConnection: $(fodServiceConnection)
+      ReleaseOptions: '0'
+      ReleaseId: $(fodReleaseId)
+      EntitlementSelection: '1'
+      EntitlementPreference: '1'
+      OverrideScanSettings: '2'
+      InProgressScanActionType: '2'
+      RemediationScanPreference: '2'
+      BuildType: 'gradle'
+      BuildCommand: 'clean build'
+      BuildFile: ${{ parameters.projectFile }}
+      PolicyFailAction: '0'     
+# Uncomment to use fcli for SAST scan    
+#  - task: PowerShell@2
+#    displayName: 'FoD SAST Scan'
+#    inputs:
+#      targetType: 'inline'
+#      script: |
+#        Write-Host "##[command]scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE} -oss"
+#        scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE} -oss
+#        Write-Host "##[command]fcli fod sast-scan start --release=$(fodReleaseId) --notes=""${env:FOD_SCAN_NOTES}"" --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
+#        fcli fod sast-scan start --release=$(fodReleaseId) --notes="${env:FOD_SCAN_NOTES}" -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
+#        Start-Sleep -Seconds 5
+#        $ScanId=(fcli util var get ::curScan::)
+#        Write-Host "##[debug]Scan Id is: $ScanId"
+#        Write-Host "##vso[task.setvariable variable=fodScanId]$ScanId"
+#        Write-Host "##[command]fcli fod sast-scan wait-for ::curScan:: --session=azure-pipelines"
+#        fcli fod sast-scan wait-for ::curScan:: --session=azure-pipelines
+#      workingDirectory: ${{ parameters.workingDirectory }}
+#    env:
+#      PROJ_FILE: ${{ parameters.projectFile }}
+#      FOD_RELEASE_ID: $(fodReleaseId)
+#      PACKAGE_FILE: "package.zip"
+#      FOD_SCAN_NOTES: "Triggered by Azure DevOps Pipelines"
   - task: PowerShell@2
     displayName: 'FoD Logout'
     inputs:
