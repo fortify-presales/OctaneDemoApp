@@ -93,7 +93,7 @@ jobs:
     displayName: 'FoD SAST Scan'
     inputs:
       FortifyProjects: '.'
-      FodConnection: ${{ parameters.fodServiceConnection }}
+      FodConnection: 'FortifyOnDemandServiceConnection-OctaneDemoApp'
       ReleaseOptions: '0'
       ReleaseId: $(fodReleaseId)
       EntitlementSelection: '1'

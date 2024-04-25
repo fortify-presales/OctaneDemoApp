@@ -98,7 +98,7 @@ jobs:
     displayName: 'FoD DAST Scan'
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')  
     inputs:
-      FodConnection: ${{ parameters.fodServiceConnection }}
+      FodConnection: 'FortifyOnDemandServiceConnection-OctaneDemoApp'
       ReleaseOptions: '0'
       ReleaseId: $(fodReleaseId)
       AssessmentTypeId: $(fodAssessmentTypeId)
