@@ -94,7 +94,7 @@ jobs:
             Remove-Item ${env:PACKAGE_FILE} -Verbose
         }
         Write-Host "##[command]debricked resolve $(Build.SourcesDirectory)"
-        debricked resolve
+        debricked resolve --regenerate 2 $(Build.SourcesDirectory)
         Write-Host "##[command]Compress-Archive -Path $(Build.SourcesDirectory)/packages.lock.json -DestinationPath ${env:PACKAGE_FILE}"
         Compress-Archive -Path $(Build.SourcesDirectory)/packages.lock.json -DestinationPath ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
