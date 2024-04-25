@@ -93,10 +93,10 @@ jobs:
         if (Test-Path ${env:PACKAGE_FILE}) {
             Remove-Item ${env:PACKAGE_FILE} -Verbose
         }
-        Write-Host "##[command]debricked resolve"
+        Write-Host "##[command]debricked resolve $(Build.SourcesDirectory)"
         debricked resolve
-        Write-Host "##[command]Compress-Archive -Path .\packages.lock.json -DestinationPath ${env:PACKAGE_FILE}"
-        Compress-Archive -Path .\packages.lock.json -DestinationPath ${env:PACKAGE_FILE}
+        Write-Host "##[command]Compress-Archive -Path $(Build.SourcesDirectory)/packages.lock.json -DestinationPath ${env:PACKAGE_FILE}"
+        Compress-Archive -Path $(Build.SourcesDirectory)/packages.lock.json -DestinationPath ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
         fcli fod oss-scan start --release=$(fodReleaseId) -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
         Start-Sleep -Seconds 5
@@ -107,7 +107,7 @@ jobs:
         fcli fod oss-scan wait-for ::curScan:: --session=azure-pipelines
       workingDirectory: ${{ parameters.workingDirectory }}
     env:
-      PACKAGE_FILE: "package.zip"
+      PACKAGE_FILE: "$(Build.SourcesDirectory)/package.zip"
       FOD_RELEASE_ID: $(fodReleaseId)
       FOD_SCAN_NOTES: "Triggered by Azure DevOps Pipelines"
   - task: PowerShell@2
