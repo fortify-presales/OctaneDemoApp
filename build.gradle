@@ -69,7 +69,7 @@ configurations.all {
 def props = new Properties()
 def propertiesFile = project.file('.env')
 if (!propertiesFile.exists()) {
-    props.setProperty('APP_NAME', 'FortifyDemoApp')
+    props.setProperty('APP_NAME', 'OctaneDemoApp')
     props.setProperty('APP_VER_NAME', '1.0')
     Writer writer = new FileWriter(propertiesFile, false)
     props.store(writer, "Change these variables to relevant values. Don't commit this file to source control.")
@@ -77,10 +77,10 @@ if (!propertiesFile.exists()) {
 }
 props.load(propertiesFile.newDataInputStream())
 
-project.archivesBaseName = 'FortifyDemoApp'
+project.archivesBaseName = 'OctaneDemoApp'
 group = 'com.opentext.app'
-version = ''
-description = 'An insecure Web application for use in Fortify demonstrations'
+version = '1.0'
+description = 'Insecure Web application for use in Fortify/ALM Octane demonstrations'
 sourceCompatibility = '1.8'
 
 sourceSets {

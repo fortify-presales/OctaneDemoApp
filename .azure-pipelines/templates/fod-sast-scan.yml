@@ -91,8 +91,8 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "##[command]scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}"
-        scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE}
+        Write-Host "##[command]scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE} -oss"
+        scancentral package -bt gradle -bf ${env:PROJ_FILE} -o ${env:PACKAGE_FILE} -oss
         Write-Host "##[command]fcli fod sast-scan start --release=$(fodReleaseId) --notes=""${env:FOD_SCAN_NOTES}"" --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
         fcli fod sast-scan start --release=$(fodReleaseId) --notes="${env:FOD_SCAN_NOTES}" -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
         Start-Sleep -Seconds 5

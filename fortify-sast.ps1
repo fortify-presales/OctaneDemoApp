@@ -1,5 +1,5 @@
 #
-# Example script to perform Fortify Static Code Analysis
+# An example script to perform Fortify Static Code Analysis using local installation
 #
 
 # Parameters
@@ -22,8 +22,8 @@ $ScanSwitches = ""
 #$ScanSwitches = "-Dcom.fortify.sca.rules.enable_wi_correlation=true -Dcom.fortify.sca.Phase0HigherOrder.Languages=javascript,typescript -Dcom.fortify.sca.EnableDOMModeling=true -Dcom.fortify.sca.follow.imports=true -Dcom.fortify.sca.exclude.unimported.node.modules=true"
 
 # Test we have Fortify installed successfully
-if ([string]::IsNullOrEmpty($AppName)) { throw "Application Name has not been set" }
-if ([string]::IsNullOrEmpty($AppVersion)) { throw "Application Version Name has not been set" }
+if ([string]::IsNullOrEmpty($AppName)) { $AppName = "OctaneDemoApp" }
+if ([string]::IsNullOrEmpty($AppVersion)) { throw $AppVersion = "1.0" }
 
 # Run the translation and scan
 
@@ -49,8 +49,6 @@ Write-Host Running scan...
     -cp $ClassPath  -java-build-dir "build" -debug -verbose `
     -scan-policy $ScanPolicy `
     -build-project "$AppName" -build-version "$AppVersion" -build-label "SNAPSHOT" `
-    -scan 
-#    -f "$($AppName).fpr"
-
+    -scan -f "$($AppName).fpr"
 
 Write-Host Done.
