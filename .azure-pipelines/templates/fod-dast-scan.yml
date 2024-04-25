@@ -93,7 +93,7 @@ jobs:
       FOD_APP_NAME: ${{ parameters.fodAppName }}
       FOD_RELEASE_NAME: ${{ parameters.fodReleaseName }}
       FOD_PARENT_RELEASE_NAME: ${{ parameters.fodParentReleaseName }}
-# Uncomment to use Fortify Azure DevOps extension for DAST scan    
+  # Uncomment to use Fortify Azure DevOps extension for DAST scan    
   - task: FortifyDASTAutomated@2
     displayName: 'FoD DAST Scan'
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')  
@@ -106,7 +106,7 @@ jobs:
       EntitlementFrequencyType: $(fodReleaseId)
       OverrideScanSettings: '2'
       PolicyFailAction: '0'
-# Uncomment to use fcli for SAST scan    
+   # Uncomment to use fcli for SAST scan    
 #  - task: PowerShell@2
 #    displayName: 'FoD DAST Scan'
 #    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')

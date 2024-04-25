@@ -88,10 +88,10 @@ jobs:
       FOD_APP_NAME: ${{ parameters.fodAppName }}
       FOD_RELEASE_NAME: ${{ parameters.fodReleaseName }}
       FOD_PARENT_RELEASE_NAME: ${{ parameters.fodParentReleaseName }}
-# Uncomment to use Fortify Azure DevOps extension for SAST scan    
- - task: FortifyOnDemandStatic@9
-   displayName: 'FoD SAST Scan'
-   inputs:
+  # Uncomment to use Fortify Azure DevOps extension for SAST scan    
+  - task: FortifyOnDemandStatic@9
+    displayName: 'FoD SAST Scan'
+    inputs:
       FortifyProjects: '.'
       FodConnection: $(fodServiceConnection)
       ReleaseOptions: '0'
@@ -105,7 +105,7 @@ jobs:
       BuildCommand: 'clean build'
       BuildFile: ${{ parameters.projectFile }}
       PolicyFailAction: '0'     
-# Uncomment to use fcli for SAST scan    
+  # Uncomment to use fcli for SAST scan    
 #  - task: PowerShell@2
 #    displayName: 'FoD SAST Scan'
 #    inputs:
