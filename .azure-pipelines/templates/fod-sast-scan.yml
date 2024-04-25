@@ -93,7 +93,7 @@ jobs:
     displayName: 'FoD SAST Scan'
     inputs:
       FortifyProjects: '.'
-      FodConnection: $(fodServiceConnection)
+      FodConnection: ${{ parameters.fodServiceConnection }}
       ReleaseOptions: '0'
       ReleaseId: $(fodReleaseId)
       EntitlementSelection: '1'
