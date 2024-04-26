@@ -71,7 +71,7 @@ variables:
   - name: USE_FOD_SAST
     value: true
   - name: USE_FOD_OSS
-    value: true
+    value: false
   - name: USE_DEBRICKED
     value: true
   - name: USE_FOD_DAST

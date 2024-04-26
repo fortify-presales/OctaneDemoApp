@@ -95,10 +95,11 @@ jobs:
         }
         Write-Host "##[command]debricked resolve $(Build.SourcesDirectory)"
         debricked resolve --regenerate 2 $(Build.SourcesDirectory)
+        Get-Child-Item -Path $(Build.SourcesDirectory)
         Write-Host "##[command]Compress-Archive -Path $(Build.SourcesDirectory)/gradle.debricked.lock -DestinationPath ${env:PACKAGE_FILE}"
         Compress-Archive -Path $(Build.SourcesDirectory)/gradle.debricked.lock -DestinationPath ${env:PACKAGE_FILE}
         Write-Host "##[command]fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines"
-        fcli fod oss-scan start --release=$(fodReleaseId) -f=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
+        fcli fod oss-scan start --release=$(fodReleaseId) --file=${env:PACKAGE_FILE} --store=curScan --session=azure-pipelines
         Start-Sleep -Seconds 5
         $ScanId=(fcli util var get ::curScan::)
         Write-Host "##[debug]Scan Id is: $ScanId"

@@ -97,6 +97,7 @@ jobs:
   - task: FortifyDASTAutomated@2
     displayName: 'FoD DAST Scan'
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')  
+    timeoutInMinutes: 120    
     inputs:
       FodConnection: 'FortifyOnDemandServiceConnection-OctaneDemoApp'
       ReleaseOptions: '0'
