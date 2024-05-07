@@ -172,7 +172,8 @@ public class DefaultController {
     @ResponseBody
     public ResponseEntity<String> getKeywordsContent(@Param("keywords") String keywords) {
         String retContent = "Product search using: " + keywords;
-        return ResponseEntity.ok().body(Encode.forHtml(retContent));
+        return ResponseEntity.ok().body(MySafeEncoder(retContent));
+        //return ResponseEntity.ok().body(Encode.forHtml(retContent));
     }
 
     // simple API
@@ -194,5 +195,9 @@ public class DefaultController {
         model.addAttribute("ex", ex);
         return "error";
     }*/
+
+    private String MySafeEncoder(String input) {
+        return input.replaceAll("(?i)<(/?scriptt[^>]*)>", "&lt;$1&gt;");
+    }
 
 }
