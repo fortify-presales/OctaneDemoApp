@@ -1,0 +1,84 @@
+
+# Run FortifyBugTrackerUtility on a schedule
+
+name: Daily-FTBU
+
+trigger:
+- main
+
+schedules:
+- cron: "0 2 * * *"
+  displayName: Daily Build
+  branches:
+    include:
+    - main
+  always: true
+
+variables:
+
+  #
+  # In order for the pipeline to execute successfully you should create and set the following variables in the Pipeline UI.
+  # 
+  # For FoD:
+  #   FOD_BASE_URL                  - FoD Base Url, e.g. "https://ams.fortify.com"
+  #   FOD_API_URL                   - FoD API URL, e.g. "https://api.ams.fortify.com"
+  #   FOD_TENANT                    - FoD Tenant Name
+  #   FOD_CLIENT_ID                 - FoD API Client Id
+  #   FOD_CLIENT_SECRET             - FoD API Client Secret
+  #
+  # For Octane/ValueEdge
+  #   OCTANE_WORKSPACES             - List of target ALM Octane/ValueEdge workspaces
+  # and the below if FortifyBugTrackerUtility is used:
+  #   OCTANE_BASE_URL               - ALM Octane/ValueEdge Base Url, e.g. "https://almoctane-ams.saas.microfocus.com/"
+  #   OCTANE_CLIENT_ID              - ALM Octane/ValueEdge API Client Id
+  #   OCTANE_CLIENT_SECRET          - ALM Octane/ValueEdge API Client Secret
+  #   OCTANE_SHARED_SPACE_ID        - ALM Octane/ValueEdge Shared Space Id
+  #   OCTANE_WORKSPACE_ID           - ALM Octane/ValueEdge Shared SpaceWorkspace Id
+  #
+  # The pipeline job templates make use of the Fortify CLI tool (https://github.com/fortify/fcli) and Debricked CLI tool (https://github.com/debricked/cli)
+  # There are tasks which make use of preview extensions (not published to the Azure DevOps marketplace) to install these tools included, e.g.:
+  #   - FcliInstaller - https://github.com/fortify-presales/azure-pipelines-fcli-tasks
+  #   - DebrickedInstaller - https://github.com/fortify-presales/azure-pipelines-debricked-tasks
+  # Follow the instructions on the GitHub repos to install these extensions.
+  # If you are using a self-hosted agent you can install the fcli and debricked tools yourselves, add to the path and comment out the these extension tasks.
+  #
+  # IMPORTANT: if using a self-hosted agent, please ensure a Java 17x64 SDK is installed and the environment variable JAVA_HOME_17_X64 is set to its location
+
+    #
+    # By default the FoD/SSC application name is set to the name of the Git repository
+    # If you wish to override any of these please set the following variables from the pipelines UI:
+    #
+    # FORTIFY_APP_NAME_OVERRIDE
+    # FORTIFY_RELEASE_NAME_OVERRIDE
+    #
+  - name: FORTIFY_APP_NAME
+    value: $(Build.Repository.Name)
+  - name: FORTIFY_RELEASE_NAME
+    value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
+
+stages:
+
+  #
+  # Create and snychronize FoD Issues to ALM Octane/ValueEdge
+  #
+  - stage: FoD_Issues_To_Octane
+    displayName: 'FoD Issues to Octane'
+    jobs:
+      - template: '.azure-pipelines/templates/fod-to-octane.yml'
+        parameters:
+          workingDirectory: '.' # could be project directory with specific config file
+          fodBaseUrl: $(FOD_BASE_URL)
+          fodTenant: $(FOD_TENANT)
+          fodClientId: $(FOD_CLIENT_ID)
+          fodClientSecret: $(FOD_CLIENT_SECRET)
+          fodAppName: "$(FORTIFY_APP_NAME)"
+          fodReleaseName: "$(FORTIFY_RELEASE_NAME)"
+          octaneBaseUrl: $(OCTANE_BASE_URL)
+          octaneSharedSpaceId: $(OCTANE_SHARED_SPACE_ID)
+          octaneWorkspaceId: $(OCTANE_WORKSPACE_ID)
+          octaneClientId: $(OCTANE_CLIENT_ID)
+          octaneClientSecret: $(OCTANE_CLIENT_SECRET)
+          pool:
+            name: 'FortifyPreSales' # use named self-hosted pool
+            #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
+
