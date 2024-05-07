@@ -1,4 +1,4 @@
-[![DevSecOps with Fortify on Demand](https://github.com/fortify-presales/OctaneDemoApp/actions/workflows/DevSecOps.yml/badge.svg)](https://github.com/fortify-presales/FortifyDemoApp/actions/workflows/DevSecOps.yml)
+[![Build Status](https://dev.azure.com/fortify-presales/OctaneDemoApp/_apis/build/status%2Ffortify-presales.OctaneDemoApp?branchName=main)](https://dev.azure.com/fortify-presales/OctaneDemoApp/_build/latest?definitionId=13&branchName=main)
 
 # Octane Demo App
 

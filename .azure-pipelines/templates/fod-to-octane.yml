@@ -56,8 +56,10 @@ jobs:
           targetType: 'inline'
           script: |
             fcli tool definitions update
-            fcli tool fbtu install -y -d $(Build.SourcesDirectory)\ftbu
-            Write-Host "##vso[task.prependpath]$(Build.SourcesDirectory)\ftbu\bin"
+            $ftbuDir = Join-Path -Path $(Build.BinariesDirectory) -ChildPath "ftbu"
+            fcli tool fbtu install -y -d $ftbuDir
+            $ftbuBinDir = Join-Path -Path "$ftbuDir" -ChildPath "bin"
+            Write-Host "##vso[task.prependpath]$ftbuBinDir"
       - task: PowerShell@2
         displayName: 'FoD Check Release'
         inputs:
