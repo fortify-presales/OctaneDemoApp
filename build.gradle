@@ -44,6 +44,7 @@ dependencies {
     implementation 'javax.servlet:jstl:1.2'
     implementation 'com.h2database:h2:1.4.197'
     implementation 'org.webjars:lodash:4.17.4'
+    implementation 'org.owasp.encoder:encoder:1.2.3'
     testImplementation "org.hibernate.validator:hibernate-validator:6.1.0.Final"
     testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
         exclude group: "com.vaadin.external.google", module:"android-json"

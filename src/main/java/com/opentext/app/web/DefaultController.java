@@ -51,6 +51,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.owasp.encoder.Encode;
+
 @Controller
 public class DefaultController {
     private static final Logger log = LogManager.getLogger(DefaultController.class);
@@ -170,7 +172,7 @@ public class DefaultController {
     @ResponseBody
     public ResponseEntity<String> getKeywordsContent(@Param("keywords") String keywords) {
         String retContent = "Product search using: " + keywords;
-        return ResponseEntity.ok().body(retContent);
+        return ResponseEntity.ok().body(Encode.forHtml(retContent));
     }
 
     // simple API
