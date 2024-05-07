@@ -24,6 +24,7 @@ import com.opentext.app.entity.Review;
 import com.opentext.app.entity.SubscribeUserRequest;
 import com.opentext.app.repository.ProductRepository;
 import com.opentext.app.service.FileSystemService;
+import com.opentext.app.utils.WebUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.Resource;
@@ -172,8 +173,7 @@ public class DefaultController {
     @ResponseBody
     public ResponseEntity<String> getKeywordsContent(@Param("keywords") String keywords) {
         String retContent = "Product search using: " + keywords;
-        return ResponseEntity.ok().body(MySafeEncoder(retContent));
-        //return ResponseEntity.ok().body(Encode.forHtml(retContent));
+        return ResponseEntity.ok().body(WebUtils.MySafeEncoder(retContent));
     }
 
     // simple API
@@ -195,9 +195,5 @@ public class DefaultController {
         model.addAttribute("ex", ex);
         return "error";
     }*/
-
-    private String MySafeEncoder(String input) {
-        return input.replaceAll("(?i)<(/?scriptt[^>]*)>", "&lt;$1&gt;");
-    }
 
 }
