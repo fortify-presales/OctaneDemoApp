@@ -77,7 +77,7 @@ variables:
   - name: USE_FOD_DAST
     value: true
   - name: SYNC_ISSUES
-    value: true
+    value: false
 
     #
     # By default the FoD/SSC application name is set to the name of the Git repository

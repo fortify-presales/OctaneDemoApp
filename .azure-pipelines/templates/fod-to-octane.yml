@@ -101,8 +101,9 @@ jobs:
         inputs:
           targetType: 'inline'
           script: |
-            Write-Host "##[command]FortifyBugTrackerUtility -configFile $(Build.SourcesDirectory)\etc\FoDToOctane.xml -FoDBaseUrl ""${env:FOD_BASE_URL}"" -FoDTenant ""${env:FOD_TENANT}"" -FoDClientId ""${env:FOD_CLIENT_ID}"" -FoDClientSecret ""${env:FOD_CLIENT_SECRET}"" -FoDReleaseId ""${env:FOD_RELEASE_ID}"" -OctaneBaseUrl ""${env:OCTANE_BASE_URL}"" -OctaneSharedSpaceUid ""${env:OCTANE_SHARED_SPACE_ID}"" -OctaneWorkspaceId ""${env:OCTANE_WORKSPACE_ID}"" -OctaneClientId ""${env:OCTANE_CLIENT_ID}"" -OctaneClientSecret ""${env:OCTANE_CLIENT_SECRET}"" "
-            FortifyBugTrackerUtility -configFile $(Build.SourcesDirectory)\etc\FoDToOctane.xml -configFile $(Build.SourcesDirectory)\etc\FoDToOctane.xml `
+            $ftbuConfig = Join-Path -Path $(Build.SourcesDirectory) -ChildPath "etc" | Join-Path -ChildPath "FoDToOctane.xml"
+            Write-Host "##[command]FortifyBugTrackerUtility -configFile $ftbuConfig -FoDBaseUrl ""${env:FOD_BASE_URL}"" -FoDTenant ""${env:FOD_TENANT}"" -FoDClientId ""${env:FOD_CLIENT_ID}"" -FoDClientSecret ""${env:FOD_CLIENT_SECRET}"" -FoDReleaseId ""${env:FOD_RELEASE_ID}"" -OctaneBaseUrl ""${env:OCTANE_BASE_URL}"" -OctaneSharedSpaceUid ""${env:OCTANE_SHARED_SPACE_ID}"" -OctaneWorkspaceId ""${env:OCTANE_WORKSPACE_ID}"" -OctaneClientId ""${env:OCTANE_CLIENT_ID}"" -OctaneClientSecret ""${env:OCTANE_CLIENT_SECRET}"" "
+            FortifyBugTrackerUtility -configFile $ftbuConfig `
                 -FoDBaseUrl ""${env:FOD_BASE_URL}"" -FoDTenant ""${env:FOD_TENANT}"" `
                 -FoDClientId ""${env:FOD_CLIENT_ID}"" -FoDClientSecret ""${env:FOD_CLIENT_SECRET}"" `
                 -FoDReleaseId ""${env:FOD_RELEASE_ID}"" `
