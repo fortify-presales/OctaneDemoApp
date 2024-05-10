@@ -55,7 +55,7 @@
 								   autofocus="autofocus" placeholder="Username">
 						</div>
 						<div class="form-group mb-0">
-							<input type="text" id="password" name="password" class="form-control"
+							<input type="password" id="password" name="password" class="form-control"
 								   placeholder="Password">
 						</div>
 

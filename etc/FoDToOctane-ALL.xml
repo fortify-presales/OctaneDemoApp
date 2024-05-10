@@ -121,7 +121,7 @@
                 <entry key="item_origin.type" value="list_node"/>
                 <entry key="item_origin.name" value="Fortify"/>
                 <entry key="detected_in_release.type" value="release"/>
-                <entry key="detected_in_release.name" value="IWA-DotNet-1.0"/>
+                <entry key="detected_in_release.name" value="OctaneDemoApp-1.0"/>
                 <entry key="owasp_category_udf.type" value="list_node"/>
                 <entry key="owasp_category_udf.name" value="${owasp2021}"/>
             </map>
