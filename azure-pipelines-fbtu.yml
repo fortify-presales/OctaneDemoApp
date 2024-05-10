@@ -59,7 +59,7 @@ variables:
 stages:
 
   #
-  # Create and snychronize FoD Issues to ALM Octane/ValueEdge
+  # Create and synchronize FoD Issues to ALM Octane/ValueEdge
   #
   - stage: FoD_Issues_To_Octane
     displayName: 'FoD Issues to Octane'
@@ -78,6 +78,7 @@ stages:
           octaneWorkspaceId: $(OCTANE_WORKSPACE_ID)
           octaneClientId: $(OCTANE_CLIENT_ID)
           octaneClientSecret: $(OCTANE_CLIENT_SECRET)
+          configFile: 'FoDToOctane-ALL.xml'
           pool:
             name: 'FortifyPreSales' # use named self-hosted pool
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool

@@ -34,6 +34,7 @@ pr:
       - media/*
 
 variables:
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
   #
   # In order for the pipeline to execute successfully you should create and set the following variables in the Pipeline UI.
@@ -77,7 +78,7 @@ variables:
   - name: USE_FOD_DAST
     value: true
   - name: SYNC_ISSUES
-    value: false
+    value: true
 
     #
     # By default the FoD/SSC application name is set to the name of the Git repository
@@ -210,7 +211,7 @@ stages:
   #
   - stage: FoD_DAST
     displayName: 'FoD DAST'
-    condition: eq(variables['USE_FOD_DAST'], 'true')
+    condition: and(eq(variables['USE_FOD_DAST'], 'true'), eq(variables.isMain, 'true'))
     dependsOn: DeployApp
     jobs:
       # Run FoD DAST Scan on Project
@@ -250,7 +251,7 @@ stages:
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
 
   #
-  # Create and snychronize FoD Issues to ALM Octane/ValueEdge
+  # Create and synchronize "NEW" FoD Issues to ALM Octane/ValueEdge
   #
   - stage: FoD_Issues_To_Octane
     displayName: 'FoD Issues to Octane'
@@ -273,6 +274,7 @@ stages:
           octaneWorkspaceId: $(OCTANE_WORKSPACE_ID)
           octaneClientId: $(OCTANE_CLIENT_ID)
           octaneClientSecret: $(OCTANE_CLIENT_SECRET)
+          configFile: 'FoDToOctane-NEW.xml'
           pool:
             name: 'FortifyPreSales' # use named self-hosted pool
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool

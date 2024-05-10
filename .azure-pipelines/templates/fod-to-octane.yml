@@ -26,6 +26,10 @@ parameters:
   - name: octaneWorkspaceId
   - name: octaneClientId
   - name: octaneClientSecret
+  - name: configDir
+    default: 'etc'
+  - name: configFile
+    default: 'FoDToOctane.xml'
 
 jobs:
   - job: FoDIssuesToOctaneDefects
@@ -102,7 +106,7 @@ jobs:
           targetType: 'inline'
           script: |
             $ftbuJar = Join-Path -Path $(Build.BinariesDirectory) -ChildPath "ftbu" | Join-Path -ChildPath "FortifyBugTrackerUtility.jar"
-            $ftbuConfig = Join-Path -Path $(Build.SourcesDirectory) -ChildPath "etc" | Join-Path -ChildPath "FoDToOctane.xml"
+            $ftbuConfig = Join-Path -Path $(Build.SourcesDirectory) -ChildPath "${env:CONFIG.DIR}" | Join-Path -ChildPath "${env:CONFIG_FILE}"
             Write-Host "##[command]java -jar $ftbuJar -configFile $ftbuConfig -FoDBaseUrl ""${env:FOD_BASE_URL}"" -FoDTenant ""${env:FOD_TENANT}"" -FoDClientId ""${env:FOD_CLIENT_ID}"" -FoDClientSecret ""${env:FOD_CLIENT_SECRET}"" -FoDReleaseId ""${env:FOD_RELEASE_ID}"" -OctaneBaseUrl ""${env:OCTANE_BASE_URL}"" -OctaneSharedSpaceUid ""${env:OCTANE_SHARED_SPACE_ID}"" -OctaneWorkspaceId ""${env:OCTANE_WORKSPACE_ID}"" -OctaneClientId ""${env:OCTANE_CLIENT_ID}"" -OctaneClientSecret ""${env:OCTANE_CLIENT_SECRET}"" "
             java -jar $ftbuJar -configFile $ftbuConfig -FoDBaseUrl "${env:FOD_BASE_URL}" -FoDTenant "${env:FOD_TENANT}" -FoDClientId "${env:FOD_CLIENT_ID}" -FoDClientSecret "${env:FOD_CLIENT_SECRET}" -FoDReleaseId "${env:FOD_RELEASE_ID}" -OctaneBaseUrl "${env:OCTANE_BASE_URL}" -OctaneSharedSpaceUid "${env:OCTANE_SHARED_SPACE_ID}" -OctaneWorkspaceId "${env:OCTANE_WORKSPACE_ID}" -OctaneClientId "${env:OCTANE_CLIENT_ID}" -OctaneClientSecret "${env:OCTANE_CLIENT_SECRET}"
           workingDirectory: ${{ parameters.workingDirectory }}
@@ -117,3 +121,5 @@ jobs:
           OCTANE_WORKSPACE_ID: ${{ parameters.octaneWorkspaceId }}
           OCTANE_CLIENT_ID: ${{ parameters.octaneClientId }}
           OCTANE_CLIENT_SECRET: ${{ parameters.octaneClientSecret }}
+          CONFIG_DIR: ${{ parameters.configDir }}
+          CONFIG_FILE: ${{ parameters.configFile }}

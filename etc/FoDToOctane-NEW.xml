@@ -70,7 +70,7 @@
     <bean class="com.fortify.bugtracker.src.fod.config.FoDSourceVulnerabilitiesConfiguration">
         <property name="filterStringForVulnerabilitiesToBeSubmitted">
             <value>
-                severityString:Critical|High+isSuppressed=false
+                severityString:Critical|High+isSuppressed:false+status:New
             </value>
         </property>
 
