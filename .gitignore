@@ -54,7 +54,9 @@ build
 /FortifyDemoApp.mbs
 package.zip
 
-# Misc
-bin
+# Debricked
+.debrickedTmpFolder
 .debricked.multiprojects.txt
 .gradle-init-script.debricked.groovy
+gradle.debricked.local
+maven.debricked.lock

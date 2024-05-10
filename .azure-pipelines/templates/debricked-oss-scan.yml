@@ -53,8 +53,8 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "##[command]debricked scan --callgraph --fingerprint --access-token=""${env:DEBRICKED_TOKEN}"" -e "*/**.lock" -e ""**/build/classes/test/**"""
-        debricked scan --callgraph --fingerprint --access-token="${env:DEBRICKED_TOKEN}" -e "*/**.lock" -e "**/build/classes/test/**" .
+        Write-Host "##[command]debricked scan --callgraph --access-token=""${env:DEBRICKED_TOKEN}""  -e ""build.gradle"" -e ""*/**.lock"" -e ""**/build/classes/test/**"" -e ""**/target/classes/test-classes/**""" "
+        debricked scan --callgraph --access-token="${env:DEBRICKED_TOKEN}" -e "build.gradle" -e "*/**.lock" -e "**/build/classes/test/**" -e "**/target/classes/test-classes/**" .
       workingDirectory: ${{ parameters.workingDirectory }}
     env:
       DEBRICKED_TOKEN: ${{ parameters.debrickedToken }}

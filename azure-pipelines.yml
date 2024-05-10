@@ -34,8 +34,6 @@ pr:
       - media/*
 
 variables:
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-
   #
   # In order for the pipeline to execute successfully you should create and set the following variables in the Pipeline UI.
   # 
@@ -211,7 +209,7 @@ stages:
   #
   - stage: FoD_DAST
     displayName: 'FoD DAST'
-    condition: and(eq(variables['USE_FOD_DAST'], 'true'), eq(variables.isMain, 'true'))
+    condition: and(eq(variables['USE_FOD_DAST'], 'true'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     dependsOn: DeployApp
     jobs:
       # Run FoD DAST Scan on Project
