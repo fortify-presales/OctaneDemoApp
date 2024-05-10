@@ -42,7 +42,7 @@
 				</div>
 
 				<div class="row align-items-center">
-					<img src="/img/login_logo.png" class="rounded mx-auto d-block" style="padding-top:20px;" alt="IWA Pharmacy Direct">
+					<img src="/img/login_logo.png" class="rounded mx-auto d-block" style="padding-top:20px;" alt="Fortify Demo App">
 				</div>
 
 				<div class="row justify-content-center align-items-center">
@@ -55,7 +55,7 @@
 								   autofocus="autofocus" placeholder="Username">
 						</div>
 						<div class="form-group mb-0">
-							<input type="password" id="password" name="password" class="form-control" autocomplete="off"
+							<input type="text" id="password" name="password" class="form-control"
 								   placeholder="Password">
 						</div>
 
