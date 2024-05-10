@@ -244,7 +244,7 @@ stages:
           fodClientSecret: $(FOD_CLIENT_SECRET)
           fodAppName: "$(FORTIFY_APP_NAME)"
           fodReleaseName: "$(FORTIFY_RELEASE_NAME)"
-          reportFile: ""$(Build.SourcesDirectory)/reports/$(FORTIFY_RELEASE_NAME).html"
+          reportFile: "$(Build.SourcesDirectory)/reports/$(FORTIFY_RELEASE_NAME).html"
           pool:
             name: 'FortifyPreSales' # use named self-hosted pool
             #vmImage: 'windows-2022' # or uncomment to use Azure Devops cloud-hosted pool
