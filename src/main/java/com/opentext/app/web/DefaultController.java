@@ -176,6 +176,13 @@ public class DefaultController {
         return ResponseEntity.ok().body(WebUtils.MySafeEncoder(retContent));
     }
 
+    @GetMapping("/products/test")
+    @ResponseBody
+    public ResponseEntity<String> getKeywordsTest(@Param("keywords") String keywords) {
+        String retContent = "Product search using: " + keywords;
+        return ResponseEntity.ok().body(retContent);
+    }
+    
     // simple API
     @PostMapping(value = {"/api/subscribe-user"}, produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<String> subscribeUser(@RequestBody SubscribeUserRequest newUser) {

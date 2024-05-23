@@ -52,26 +52,25 @@
 
     -->
     <util:map id="cliOptionsDefaultValues">
-        <!--entry key="FoDBaseUrl" value="https://ams.fortify.com" /-->
-        <!--entry key="FoDTenant" value="YOUR_TENANT_ID" /-->
-        <!--entry key="FoDClientId" value="YOUR_CLIENT_ID" /-->
-        <!--entry key="FoDClientSecret" value="YOUR_CLIENT_SECRET" /-->
-        <!--entry key="FoDReleaseId" value="YOUR_RELEASE_ID" /-->
+        <entry key="Action" value="submitVulnerabilitiesAndUpdateIssueState" />
+        <entry key="FoDBaseUrl" value="https://ams.fortify.com" />
+        <entry key="FoDTenant" value="FranklinBank24" />
+        <entry key="FoDClientId" value="22b14c91-ff40-4305-b07d-376c622c089c" />
+        <entry key="FoDClientSecret" value="dWx2Z0pCPC5GVUU2dlZrNVtYVURGblZ3MG1lMDlU0" />
+        <entry key="FoDReleaseId" value="1169762" />
         <!--entry key="FoDReleaseName" value="YOUR_APPLICATION_NAME:YOUR_RELEASE_NAME" /-->
-        <!--entry key="OctaneBaseUrl" value="https://almoctane-ams.saas.microfocus.com/" /-->
-        <!--entry key="OctaneSharedSpaceUid" value="YOUR_SHARED_SPACE_ID" /-->
-        <!--entry key="OctaneWorkspaceId" value="YOUR_WORKSPACE_ID" /-->
-        <!--entry key="OctaneClientId" value="YOUR_CLIENT_ID" /-->
-        <!--entry key="OctaneClientSecret" value="YOUR_CLIENT_SECRET" /-->
+        <entry key="OctaneBaseUrl" value="https://almoctane-eur.saas.microfocus.com/" />
+        <entry key="OctaneSharedSpaceUid" value="416002" />
+        <entry key="OctaneWorkspaceId" value="79003" />
+        <entry key="OctaneClientId" value="klee_api_key_n7gwqxprx5d6phly1py5lo5k1" />
+        <entry key="OctaneClientSecret" value="=15911815013918524016571K" />
     </util:map>
 
     <context:component-scan base-package="com.fortify.bugtracker.src.fod, com.fortify.bugtracker.tgt.octane"/>
 
     <bean class="com.fortify.bugtracker.src.fod.config.FoDSourceVulnerabilitiesConfiguration">
         <property name="filterStringForVulnerabilitiesToBeSubmitted">
-            <value>
-                severityString:Critical|High+isSuppressed:false
-            </value>
+            <value>severityString:Critical|High+isSuppressed:false</value>
         </property>
 
         <!-- Note that previous versions of this sample used to store bug data as comments instead of using native bug links -->
@@ -149,7 +148,7 @@
         <property name="transitionsForOpeningIssue">
             <map>
                 <!-- Octane default workflow -->
-                <entry key="fields.phase.name matches 'Fixed'" value="Opened[Issue re-opened by FoDBugTrackerUtility]"/>
+                <entry key="fields.phase.name matches 'Closed'" value="Opened[Issue re-opened by FoDBugTrackerUtility]"/>
             </map>
         </property>
 
